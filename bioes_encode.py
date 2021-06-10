@@ -1,6 +1,6 @@
 import argparse
 
-parser = argparse.ArgumentParser(description='Change encoding from BIO to BIOLU')
+parser = argparse.ArgumentParser(description='Change encoding from BIO to BIOES')
 parser.add_argument('input', metavar='-i', type=str, help='The path to the original file with BIO encoding')
 parser.add_argument('output', metavar='-o', type=str, help='The name of your BIOLU encoded file')
 args = parser.parse_args()
@@ -60,7 +60,7 @@ def convert(input_file, output_path):
 
                 # Outside entities
                 if current_iob == 'O':
-                    output_file.write(current_line + '\n')
+                    output_file.write(current_line)
 
                 # Single entities
                 elif (prev_iob == 'O' or len(prev_line) == 0) and next_iob == 'O':
