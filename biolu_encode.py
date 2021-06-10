@@ -62,9 +62,9 @@ def convert(input_file, output_path):
                 if current_iob == 'O':
                     output_file.write(current_line + '\n')
 
-                # Unit length entities
+                # Single entities
                 elif (prev_iob == 'O' or len(prev_line) == 0) and next_iob == 'O':
-                    write_line('U-', current_iob[2:], current_line_content, output_file)
+                    write_line('S-', current_iob[2:], current_line_content, output_file)
 
                 # First element of chunk
                 elif (prev_iob == 'O' or len(prev_line) == 0) and next_iob != 'O':
@@ -72,7 +72,7 @@ def convert(input_file, output_path):
 
                 # Last element of chunk
                 elif (prev_iob != 'O' and len(prev_line) != 0) and (next_iob == 'O' or len(next_line) == 0):
-                    write_line('L-', current_iob[2:], current_line_content, output_file)
+                    write_line('E-', current_iob[2:], current_line_content, output_file)
 
                 # Inside a chunk
                 elif (prev_iob != 'O' and len(prev_line) != 0) and (next_iob != 'O' and len(next_line) != 0):
