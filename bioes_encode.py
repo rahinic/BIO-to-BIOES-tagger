@@ -34,6 +34,7 @@ def convert(input_file, output_path):
             elif len(current_line) == 0:
                 output_file.write(current_line + '\n')
 
+
             else:
                 prev_iob = None
                 next_iob = None
@@ -57,6 +58,7 @@ def convert(input_file, output_path):
 
                 current_line_content = current_line.split()
                 current_iob = current_line_content[3]
+
 
                 # Outside entities
                 if current_iob == 'O':
