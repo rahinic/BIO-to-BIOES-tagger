@@ -18,7 +18,7 @@ def write_line(new_label: str, prev_label: str, line_content: list, output_file)
     new_iob = new_label + prev_label
     if len(new_iob) == 2:
         new_iob = new_iob[0]
-    line_content[3] = new_iob
+    line_content[2] = new_iob
     current_line = ' '.join(line_content)
     output_file.write(current_line + '\n')
 
@@ -49,17 +49,23 @@ def convert(input_file, output_path):
 
                     if len(prev_line) > 0:
                         prev_line_content = prev_line.split()
-                        prev_iob = prev_line_content[3]
+                        prev_iob = prev_line_content[2]
+                        #print(f"Previous line content: {prev_line_content} and previous iob: {prev_iob}")
 
                     if len(next_line) > 0:
                         next_line_content = next_line.split()
-                        next_iob = next_line_content[3]
+                        next_iob = next_line_content[2]
+                        #print(f"Next line content: {next_line_content} and previous iob: {next_iob}")
 
                 except IndexError:
                     pass
 
                 current_line_content = current_line.split()
-                current_iob = current_line_content[3]
+                current_iob = current_line_content[2]
+
+                
+                #print(f"Current line content: {current_line_content} and previous iob: {current_iob}")
+                
 
 
                 # 00. End of line entities
@@ -88,7 +94,7 @@ def convert(input_file, output_path):
 
                 # 06. Intermediate element (2)
                 elif(". . O O" not in current_line and current_iob =='O' and str(prev_iob)[0] == 'B'):
-                    write_line('I', current_iob[2:], current_line_content, output_file)
+                    write_line('I-', current_iob[2:], current_line_content, output_file)
 
         except IndexError:
             pass
