@@ -18,10 +18,10 @@ This Python script converts a BIO-encoded file to BIOES.
 Run the following in the command line, where you specify the path of the original BIO encoded file and the name of your converted file.
 
 ```shell
-python bioes_encode.py eng.toy eng-bioes.toy
+python bioes_encode.py ConLL2003-test.txt ConLL2003-bioes-test.txt
 ```
 
 Tested for Python 3.6.
 
 ## Examples
-_eng-bioes.toy_ is the result when converting _eng.toy_
+_ConLL2003-bioes-test.txt_ is the result when converting _ConLL2003-test.txt_
