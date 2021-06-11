@@ -16,6 +16,8 @@ def read_file(input_file):
 
 def write_line(new_label: str, prev_label: str, line_content: list, output_file):
     new_iob = new_label + prev_label
+    if len(new_iob) == 2:
+        new_iob = new_iob[0]
     line_content[3] = new_iob
     current_line = ' '.join(line_content)
     output_file.write(current_line + '\n')
@@ -60,25 +62,33 @@ def convert(input_file, output_path):
                 current_iob = current_line_content[3]
 
 
-                # Outside entities
-                if current_iob == 'O':
-                    output_file.write(current_line)
+                # 00. End of line entities
+                if (". . O O" in current_line):
+                    output_file.write(current_line + '\n')
 
-                # Single entities
-                elif (prev_iob == 'O' or len(prev_line) == 0) and next_iob == 'O':
-                    write_line('S-', current_iob[2:], current_line_content, output_file)
-
-                # First element of chunk
-                elif (prev_iob == 'O' or len(prev_line) == 0) and next_iob != 'O':
-                    write_line('B-', current_iob[2:], current_line_content, output_file)
-
-                # Last element of chunk
-                elif (prev_iob != 'O' and len(prev_line) != 0) and (next_iob == 'O' or len(next_line) == 0):
+                # 01. Last(End) element entities
+                elif(". . O O" not in prev_line or len(prev_line) != 0) and (". . O O" in next_line):
                     write_line('E-', current_iob[2:], current_line_content, output_file)
 
-                # Inside a chunk
-                elif (prev_iob != 'O' and len(prev_line) != 0) and (next_iob != 'O' and len(next_line) != 0):
+                # 02. First(Begin) element entities 
+                elif (". . O O" in prev_line or len(prev_line) == 0 or str(current_iob)[0] == 'B') and (". . O O" not in next_line):
+                    write_line('B-', current_iob[2:], current_line_content, output_file)
+
+                # 03. Single entities
+                elif (". . O O" in prev_line or len(prev_line) == 0) and (". . O O" in next_line):
+                    write_line('S-', current_iob[2:], current_line_content, output_file)
+
+                # 04. Intermediate element (1)
+                elif (str(prev_iob)[0] == 'B' or str(prev_iob)[0] == 'O' or str(prev_iob)[0] == 'I') and prev_line != ". . O O" and (str(next_iob)[0] != 'E') and current_iob != 'O':
                     write_line('I-', current_iob[2:], current_line_content, output_file)
+
+                # 05. Other entities 
+                elif(". . O O" not in current_line and current_iob =='O' and str(prev_iob)[0] != 'B'):
+                    write_line('O', current_iob[2:], current_line_content, output_file)
+
+                # 06. Intermediate element (2)
+                elif(". . O O" not in current_line and current_iob =='O' and str(prev_iob)[0] == 'B'):
+                    write_line('I', current_iob[2:], current_line_content, output_file)
 
         except IndexError:
             pass
