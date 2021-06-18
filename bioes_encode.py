@@ -73,7 +73,7 @@ def convert(input_file, output_path):
                     output_file.write(current_line + '\n')
 
                 # 01. Last(End) element entities
-                elif(". . O O" not in prev_line or len(prev_line) != 0) and (". . O O" in next_line):
+                elif(". . O O" not in prev_line or len(prev_line) != 0) and (". . O O" in next_line or len(next_line) ==0):# and (". . O O" not in next_line and str(next_iob)[0]=='O'):
                     write_line('E-', current_iob[2:], current_line_content, output_file)
 
                 # 02. First(Begin) element entities 
@@ -81,20 +81,25 @@ def convert(input_file, output_path):
                     write_line('B-', current_iob[2:], current_line_content, output_file)
 
                 # 03. Single entities
-                elif (". . O O" in prev_line or len(prev_line) == 0) and (". . O O" in next_line):
+                elif (". . O O" in prev_line or len(prev_line) == 0) and (". . O O" in next_line) and str(prev_iob)[0] != 'B':
                     write_line('S-', current_iob[2:], current_line_content, output_file)
 
                 # 04. Intermediate element (1)
-                elif (str(prev_iob)[0] == 'B' or str(prev_iob)[0] == 'O' or str(prev_iob)[0] == 'I') and prev_line != ". . O O" and (str(next_iob)[0] != 'E') and current_iob != 'O':
+                elif (str(prev_iob)[0] != 'E' or str(prev_iob)[0] == 'S' or str(prev_iob)[0] == 'I') and prev_line != ". . O O" and (str(next_iob)[0] == 'E' or str(next_iob)[0] == 'I') and current_iob != 'O':
                     write_line('I-', current_iob[2:], current_line_content, output_file)
 
                 # 05. Other entities 
-                elif(". . O O" not in current_line and current_iob =='O' and str(prev_iob)[0] != 'B'):
+                elif(". . O O" not in current_line and current_iob =='O'):
                     write_line('O', current_iob[2:], current_line_content, output_file)
 
                 # 06. Intermediate element (2)
-                elif(". . O O" not in current_line and current_iob =='O' and str(prev_iob)[0] == 'B'):
+                elif(". . O O" not in current_line and ". . O O" not in next_line and current_iob =='I' and (str(prev_iob)[0] == 'B' or str(prev_iob)[0] == 'I')):
                     write_line('I-', current_iob[2:], current_line_content, output_file)
+
+                else:
+                    write_line('I-', current_iob[2:], current_line_content, output_file)
+
+
 
         except IndexError:
             pass
