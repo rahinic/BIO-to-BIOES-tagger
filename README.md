@@ -4,13 +4,11 @@ _this work is adapted from the repo github.com/taasmoe/BIO-to-BIOLU.
 
 The [CoNLL 2003 NER dataset](http://www.aclweb.org/anthology/W03-0419) is annotated using the BIO labeling scheme. Each word is labelled in accordance with its location relative to a named entity (NE), using the three following markers:
 
-* **B-**   for the first token of a NE, 
-* **I-**   for tokens inside NE's, 
-* **O-**   for tokens outside any NE. 
-
-A labelling scheme shown to outperform BIO is the BIOES scheme where two additional markers are included:
-* **E-**   for the end tokens of NE's, 
-* **S-**   for unit/single length NE's.
+* **B-**   for the first token of a chunk phrase/NE, 
+* **I-**   for tokens inside chunk phrase/NE's, 
+* **O-**   for tokens outside/other any chunk phrase/NE. 
+* **E-**   for the end tokens of chunk phrase/NE's, 
+* **S-**   for unit/single length chunk phrase/NE's.
 
 This Python script converts a BIO-encoded file to BIOES.
 
